@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Provider } from "react-redux";
-import { TodoListContainer } from "../containers/TodoListContainer";
-import { TodoFormContainer } from "../containers/TodoFormContainer";
+import { TodoListContainer } from "./TodoListContainer";
+import { TodoFormContainer } from "./TodoFormContainer";
 import store from "../store";
 
 const { Fragment } = React;
