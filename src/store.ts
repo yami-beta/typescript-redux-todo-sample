@@ -1,10 +1,15 @@
-import { createStore, combineReducers, Action } from "redux";
-import { todos, ITodo } from "./reducers/todos";
-import { draftTodo, IDraftTodo } from "./reducers/draftTodo";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import rootReducer from "./reducers";
 
-export default createStore(
-  combineReducers({
-    todos,
-    draftTodo
-  })
-);
+const configureStore = preloadedState => {
+  const store = createStore(
+    rootReducer,
+    preloadedState,
+    applyMiddleware(thunk)
+  );
+
+  return store;
+};
+
+export default configureStore;

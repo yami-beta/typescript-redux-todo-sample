@@ -1,41 +1,58 @@
+import { IAction } from "../actionDispatcher";
+
 export interface ITodo {
   id: number;
   text: string;
   completed: boolean;
 }
 
-const initialState = [];
+export interface ITodoState {
+  isFetching: boolean;
+  payload: ITodo[];
+}
 
-export const todos = (state: ITodo[] = initialState, action) => {
+const initialState = { isFetching: false, payload: [] };
+
+export const todos = (
+  state: ITodoState = initialState,
+  action: IAction
+): ITodoState => {
   switch (action.type) {
+    case "todo/get": {
+      if (action.meta.status === "start") {
+        return { isFetching: true, payload: state.payload };
+      }
+      if (action.error) {
+        return { isFetching: false, payload: action.payload };
+      }
+      return { isFetching: false, payload: action.payload };
+    }
     case "todo/add": {
-      return [
-        ...state,
-        {
-          id: state.reduce((maxId, todo) => Math.max(todo.id, maxId), -1) + 1,
-          completed: false,
-          text: action.payload.text
-        }
-      ];
+      if (action.meta.status === "start") {
+        return { isFetching: true, payload: state.payload };
+      }
+      if (action.error) {
+        return { isFetching: false, payload: action.payload };
+      }
+      return { isFetching: false, payload: action.payload };
     }
     case "todo/delete": {
-      return state.filter(todo => todo.id !== action.payload.id);
-    }
-    case "todo/edit": {
-      return state.map(
-        todo =>
-          todo.id === action.payload.id
-            ? { ...todo, text: action.payload.text }
-            : todo
-      );
+      if (action.meta.status === "start") {
+        return { isFetching: true, payload: state.payload };
+      }
+      if (action.error) {
+        return { isFetching: false, payload: action.payload };
+      }
+      return { isFetching: false, payload: action.payload };
     }
     case "todo/complete": {
-      return state.map(
-        todo =>
-          todo.id === action.payload.id
-            ? { ...todo, completed: !todo.completed }
-            : todo
-      );
+      if (action.meta.status === "start") {
+        return { isFetching: true, payload: state.payload };
+      }
+      if (action.error) {
+        return { isFetching: false, payload: action.payload };
+      }
+      return { isFetching: false, payload: action.payload };
     }
     default: {
       return state;
